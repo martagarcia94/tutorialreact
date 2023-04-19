@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { hasConflict, terms, getCourseTerm } from './utilities/times.js';
+import { hasConflict, terms, getCourseTerm } from './../utilities/times.js'; 
 
 
 const Course = ({ course, selected, setSelected }) => {

@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "build",
+    "public": "public",
+    "site": "task2react",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -14,3 +15,5 @@
     ]
   }
 }
+
+
