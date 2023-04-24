@@ -1,11 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {useState, useEffect} from 'react';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, onValue, ref } from 'firebase/database';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
   apiKey: "AIzaSyBqXF7lDMEQ8z7px3W7FvZmexlz_jWyTeA",
   authDomain: "task2react.firebaseapp.com",
@@ -16,7 +13,33 @@ const firebaseConfig = {
   appId: "1:891313989388:web:721bd1c93daced58ac4b29",
   measurementId: "G-51VNGE1SWW"
 };
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const  database  =  getDatabase(app);
+
+console.log(database,'´tt');
+
+ 
+ export const useData = (path, transform) => {
+    const [data, setData] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        const dbRef = ref(database, path);
+        const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+        if (devMode) { console.log(`loading ${path}`); }
+        return onValue(dbRef, (snapshot) => {
+            const val = snapshot.val();
+            if (devMode) { console.log(val); }
+            setData(transform ? transform(val) : val);
+            setLoading(false);
+            setError(null);
+        }, (error) => {
+            setData(null);
+            setLoading(false);
+            setError(error);
+        });
+    }, [path, transform]);
+
+    return [data, loading, error];
+};
