@@ -47,8 +47,6 @@ export const getCourseTerm = course => (
     terms[course.id.charAt(0)]
   );
 
-
-
 export const hasConflict = (course, selected) => (
     selected.some(selection => courseConflict(course, selection))
   );
